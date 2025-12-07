@@ -1,10 +1,14 @@
 import 'dart:math';
 
 import 'package:dart_scorer/components/radial_painter.dart';
+import 'package:dart_scorer/game_config.dart';
+import 'package:dart_scorer/utils/space_utils.dart';
 import 'package:flutter/material.dart';
 
 class Scorer extends StatefulWidget {
-  const Scorer({super.key});
+  final GameConfig gameConfig;
+
+  const Scorer({super.key, required this.gameConfig});
 
   @override
   State<Scorer> createState() => _ScorerState();
@@ -19,28 +23,17 @@ class _ScorerState extends State<Scorer> {
 
   @override
   Widget build(BuildContext context) {
-    final labels = {
-      0: '20',
-      1: '18',
-      2: '',
-      3: '15',
-      4: '17',
-      5: '19',
-      6: '16',
-      7: '',
-      8: '',
-    };
     final screenSize = MediaQuery.of(context).size;
-    final padding = 16.0;
-    final widgetSize = screenSize.width - padding * 2;
+    final widgetSize = screenSize.width - SpaceUtils.space200 * 2;
+
     final painterConfig = RadialPainterConfig(
       radius: widgetSize / 2,
-      labels: labels,
+      labels: widget.gameConfig.labels,
     );
     final textStyle = TextStyle(fontSize: 20.0);
 
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: padding),
+      padding: EdgeInsets.symmetric(horizontal: SpaceUtils.space200),
       child: Column(
         children: [
           Container(
