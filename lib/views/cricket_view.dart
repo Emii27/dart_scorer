@@ -9,7 +9,7 @@ class CricketView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(title: Text('prout'),),
       body: Scorer(gameConfig: GameConfig.cricket),
     );
   }

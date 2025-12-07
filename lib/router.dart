@@ -10,12 +10,14 @@ final router = GoRouter(
       builder: (BuildContext context, GoRouterState state) {
         return HomeView();
       },
-    ),
-    GoRoute(
-      path: '/cricket',
-      builder: (BuildContext context, GoRouterState state) {
-        return CricketView();
-      },
+      routes: [
+        GoRoute(
+          path: '/cricket',
+          builder: (BuildContext context, GoRouterState state) {
+            return CricketView();
+          },
+        ),
+      ],
     ),
   ],
 );
