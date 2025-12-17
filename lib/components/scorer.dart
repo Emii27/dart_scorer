@@ -2,24 +2,28 @@ import 'dart:math';
 
 import 'package:dart_scorer/components/radial_painter.dart';
 import 'package:dart_scorer/game_config.dart';
+import 'package:dart_scorer/models/player_throw.dart';
 import 'package:dart_scorer/utils/space_utils.dart';
 import 'package:flutter/material.dart';
 
 class Scorer extends StatefulWidget {
   final GameConfig gameConfig;
+  final ValueChanged<PlayerThrow> sectorOnTap;
 
-  const Scorer({super.key, required this.gameConfig});
+  // var progress = 0.0;
+
+  const Scorer({
+    super.key,
+    required this.gameConfig,
+    required this.sectorOnTap,
+  });
 
   @override
   State<Scorer> createState() => _ScorerState();
 }
 
 class _ScorerState extends State<Scorer> {
-  var selectedSector = -1;
-  var tapPosition = Offset.zero;
-  var tapPosRelative = Offset.zero;
-  var tapInsideCirle = false;
-  var progress = 0.0;
+  ThrowType selectedThrowType = .single;
 
   @override
   Widget build(BuildContext context) {
@@ -28,58 +32,65 @@ class _ScorerState extends State<Scorer> {
 
     final painterConfig = RadialPainterConfig(
       radius: widgetSize / 2,
-      labels: widget.gameConfig.labels,
+      sectors: widget.gameConfig.sectors,
     );
-    final textStyle = TextStyle(fontSize: 20.0);
 
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: SpaceUtils.space200),
-      child: Column(
-        children: [
-          Container(
-            height: widgetSize,
-            width: widgetSize,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              shape: BoxShape.circle,
-            ),
-            child: GestureDetector(
-              onTapDown: (details) => _onTap(details, painterConfig),
-              onTapUp: (_) => _resetSelectedSector(),
-              onTapCancel: () => _resetSelectedSector(),
-              child: CustomPaint(
-                painter: RadialPainter(
-                  config: painterConfig,
-                  selectedSector: selectedSector,
-                  progress: progress,
-                ),
+    return Column(
+      crossAxisAlignment: .stretch,
+      children: [
+        Container(
+          height: widgetSize,
+          width: widgetSize,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.circle,
+          ),
+          child: GestureDetector(
+            onTapDown: (details) => _onTap(details, painterConfig),
+            // onTapUp: (_) => _resetSelectedSector(),
+            // onTapCancel: () => _resetSelectedSector(),
+            child: CustomPaint(
+              painter: RadialPainter(
+                config: painterConfig,
+                selectedSector: -1,
+                progress: 0.0,
               ),
             ),
           ),
-          SizedBox(height: 32.0),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('globalPos:', style: textStyle),
-              Text('$tapPosition', style: textStyle),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('pos:', style: textStyle),
-              Text('$tapPosRelative', style: textStyle),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Tap Sector:', style: textStyle),
-              Text('$selectedSector', style: textStyle),
-            ],
-          ),
-        ],
-      ),
+        ),
+        SizedBox(height: SpaceUtils.space400),
+        SegmentedButton<ThrowType>(
+          segments: [
+            ButtonSegment(
+              value: .single,
+              label: Padding(
+                padding: const EdgeInsets.all(SpaceUtils.space100),
+                child: Text("Single"),
+              ),
+            ),
+            ButtonSegment(
+              value: .double,
+              label: Padding(
+                padding: const EdgeInsets.all(SpaceUtils.space100),
+                child: Text("Double"),
+              ),
+            ),
+            ButtonSegment(
+              value: .triple,
+              label: Padding(
+                padding: const EdgeInsets.all(SpaceUtils.space100),
+                child: Text("Triple"),
+              ),
+            ),
+          ],
+          selected: {selectedThrowType},
+          onSelectionChanged: (newSelection) => setState(() {
+            selectedThrowType = newSelection.first;
+          }),
+        ),
+        // Text(ref.watch(cricketControllerProvider).throws.length.toString()),
+        // Text(ref.watch(cricketControllerProvider).throws.join(" ; ")),
+      ],
     );
   }
 
@@ -91,9 +102,25 @@ class _ScorerState extends State<Scorer> {
         (atan2(pos.dy, pos.dx) + config.angleOffset + 2 * pi) % (2 * pi);
     var sectorTap = angle ~/ config.sectorAngle;
 
-    if(pos.distance <= config.radiusBull) {
-      sectorTap = config.labels.length;
+    if (pos.distance <= config.radiusBull) {
+      sectorTap = config.sectors.length;
     }
+
+    // Triple Bull
+    if (sectorTap == 9 && selectedThrowType == ThrowType.triple) return;
+
+    final sector = widget.gameConfig.getSectorByIndex(sectorTap);
+    // No sector found
+    if (sector == null) return;
+
+    widget.sectorOnTap(
+      PlayerThrow(value: sector.value, throwType: selectedThrowType),
+    );
+
+    setState(() {
+      selectedThrowType = .single;
+    });
+    // ref.read(cricketControllerProvider.notifier).addThrow(sectorTap);
     /*
     var newProgress = progress;
     if (sectorTap == 0) {
@@ -104,16 +131,5 @@ class _ScorerState extends State<Scorer> {
         _ => 0.0,
       };
     }*/
-
-    setState(() {
-      tapPosition = globalPos;
-      tapPosRelative = pos;
-      selectedSector = sectorTap;
-      // progress = newProgress;
-    });
-  }
-
-  void _resetSelectedSector() {
-    setState(() => selectedSector = -1);
   }
 }

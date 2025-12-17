@@ -1,43 +1,51 @@
+import 'package:dart_scorer/models/target_sector.dart';
+
 enum GameConfig {
   points(
-    labels: {
-      0: '20',
-      1: '1',
-      2: '18',
-      3: '4',
-      4: '13',
-      5: '6',
-      6: '10',
-      7: '15',
-      8: '2',
-      9: '17',
-      10: '3',
-      11: '19',
-      12: '7',
-      13: '16',
-      14: '8',
-      15: '11',
-      16: '14',
-      17: '9',
-      18: '12',
-      19: '5',
-    },
+    sectors: [
+      .new(20),
+      .new(1),
+      .new(18),
+      .new(4),
+      .new(13),
+      .new(6),
+      .new(10),
+      .new(15),
+      .new(2),
+      .new(17),
+      .new(3),
+      .new(19),
+      .new(7),
+      .new(16),
+      .new(8),
+      .new(11),
+      .new(14),
+      .new(9),
+      .new(12),
+      .new(5),
+    ],
   ),
   cricket(
-    labels: {
-      0: '20',
-      1: '18',
-      2: '',
-      3: '15',
-      4: '17',
-      5: '19',
-      6: '16',
-      7: '',
-      8: '',
-    },
+    sectors: [
+      .new(20),
+      .new(18),
+      .zero(),
+      .new(15),
+      .new(17),
+      .new(19),
+      .new(16),
+      .zero(),
+      .zero(),
+    ],
   );
 
-  final Map<int, String> labels;
+  final List<TargetSector> sectors;
 
-  const GameConfig({required this.labels});
+  const GameConfig({required this.sectors});
+
+  TargetSector? getSectorByIndex(int index) {
+    return index == sectors.length
+        ? TargetSector.bull()
+        : sectors.elementAtOrNull(index);
+  }
 }

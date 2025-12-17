@@ -7,15 +7,28 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(SpaceUtils.space400),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [FilledButton(onPressed: () {
-            context.go('/cricket');
-          }, child: Text('Cricket'))],
+          mainAxisAlignment: .center,
+          crossAxisAlignment: .stretch,
+          children: [
+            Text(
+              'Dart Scorer',
+              textAlign: .center,
+              style: textTheme.displayMedium?.copyWith(color: Colors.black),
+            ),
+            SizedBox(height: SpaceUtils.space500),
+            FilledButton(
+              onPressed: () {
+                context.go('/cricket');
+              },
+              child: Text('Cricket'),
+            ),
+          ],
         ),
       ),
     );

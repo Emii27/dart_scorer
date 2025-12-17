@@ -1,18 +1,18 @@
 import 'dart:math';
 
+import 'package:dart_scorer/models/target_sector.dart';
+import 'package:dart_scorer/utils/color_utils.dart';
 import 'package:flutter/material.dart';
 
 class RadialPainterConfig {
   final double radius;
-  final Map<int, String> labels;
-  final Color colorRed = Colors.red;
-  final Color colorGreen = Colors.green;
+  final List<TargetSector> sectors;
 
-  RadialPainterConfig({required this.radius, required this.labels});
+  RadialPainterConfig({required this.radius, required this.sectors});
 
   double get radiusBull => radius * 0.33;
 
-  int get nbSector => labels.length;
+  int get nbSector => sectors.length;
 
   Offset get center => Offset(radius, radius);
 
@@ -38,11 +38,11 @@ class RadialPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    config.labels.forEach((key, value) {
-      _drawSector(canvas, key);
-      _drawSectorText(canvas, size, key);
-    });
-    _drawBull(canvas, size, selectedSector == config.labels.length);
+    for (var index = 0; index < config.sectors.length; index++) {
+      _drawSector(canvas, index);
+      _drawSectorText(canvas, size, index);
+    }
+    _drawBull(canvas, size, selectedSector == config.sectors.length);
     // _drawProgress(canvas);
   }
 
@@ -58,20 +58,16 @@ class RadialPainter extends CustomPainter {
   }
 
   Paint _getPaint(int index) {
-    final zeroColor = Colors.black;
-    final lightBlack = Colors.black26;
-    final darkBlack = Colors.black54;
-
     var paint = Paint()..style = PaintingStyle.fill;
 
     // Paint zero
     if (index == 2 || index >= 7) {
-      paint.color = zeroColor;
+      paint.color = ColorUtils.black;
       return paint;
     }
 
     // Paint score
-    paint.color = index % 2 == 0 ? lightBlack : darkBlack;
+    paint.color = index % 2 == 0 ? ColorUtils.white : ColorUtils.lightGrey;
     if (selectedSector == index) {
       paint.color = paint.color.withAlpha((255 * 0.75).toInt());
     }
@@ -94,9 +90,9 @@ class RadialPainter extends CustomPainter {
   void _drawSectorText(Canvas canvas, Size size, int index) {
     final textPainter = TextPainter(
       text: TextSpan(
-        text: config.labels[index],
+        text: config.sectors[index].label,
         style: TextStyle(
-          color: Colors.red,
+          color: ColorUtils.black,
           fontSize: 24.0,
           fontWeight: FontWeight.bold,
         ),
@@ -121,16 +117,19 @@ class RadialPainter extends CustomPainter {
   }
 
   void _drawBull(Canvas canvas, Size size, bool isTapped) {
+    final sector = TargetSector.bull();
     final paint = Paint()
       ..style = PaintingStyle.fill
-      ..color = Colors.blue.withAlpha((isTapped ? 255 * 0.5 : 255).toInt());
+      ..color = ColorUtils.darkGrey.withAlpha(
+        (isTapped ? 255 * 0.5 : 255).toInt(),
+      );
     canvas.drawCircle(config.center, config.radius * 0.33, paint);
 
     final textPainter = TextPainter(
       text: TextSpan(
-        text: 'BULL',
+        text: sector.label,
         style: TextStyle(
-          color: Colors.red,
+          color: ColorUtils.white,
           fontSize: 24.0,
           fontWeight: FontWeight.bold,
         ),
@@ -146,17 +145,17 @@ class RadialPainter extends CustomPainter {
     textPainter.paint(canvas, offset);
   }
 
-  void _drawProgress(Canvas canvas) {
-    final paintProgress = Paint()
-      ..style = PaintingStyle.fill
-      ..color = Colors.green.withAlpha((255 * 0.5).toInt());
-
-    canvas.drawArc(
-      Rect.fromCircle(center: config.center, radius: config.radius * progress),
-      0 - config.angleOffset,
-      config.sectorAngle,
-      true,
-      paintProgress,
-    );
-  }
+  // void _drawProgress(Canvas canvas) {
+  //   final paintProgress = Paint()
+  //     ..style = PaintingStyle.fill
+  //     ..color = Colors.green.withAlpha((255 * 0.5).toInt());
+  //
+  //   canvas.drawArc(
+  //     Rect.fromCircle(center: config.center, radius: config.radius * progress),
+  //     0 - config.angleOffset,
+  //     config.sectorAngle,
+  //     true,
+  //     paintProgress,
+  //   );
+  // }
 }
