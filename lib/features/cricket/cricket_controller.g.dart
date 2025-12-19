@@ -41,7 +41,7 @@ final class CricketControllerProvider
   }
 }
 
-String _$cricketControllerHash() => r'315f7a226de3dc9e13ca94fc5a9b9898ddfcd87b';
+String _$cricketControllerHash() => r'9148574b6c9cee9c693e930b6e4e19f20a9d3776';
 
 abstract class _$CricketController extends $Notifier<CricketState> {
   CricketState build();

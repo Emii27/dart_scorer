@@ -58,30 +58,12 @@ class _ScorerState extends State<Scorer> {
             ),
           ),
         ),
-        SizedBox(height: SpaceUtils.space400),
+        SizedBox(height: SpaceUtils.space200),
         SegmentedButton<ThrowType>(
           segments: [
-            ButtonSegment(
-              value: .single,
-              label: Padding(
-                padding: const EdgeInsets.all(SpaceUtils.space100),
-                child: Text("Single"),
-              ),
-            ),
-            ButtonSegment(
-              value: .double,
-              label: Padding(
-                padding: const EdgeInsets.all(SpaceUtils.space100),
-                child: Text("Double"),
-              ),
-            ),
-            ButtonSegment(
-              value: .triple,
-              label: Padding(
-                padding: const EdgeInsets.all(SpaceUtils.space100),
-                child: Text("Triple"),
-              ),
-            ),
+            ButtonSegment(value: .single, label: Text("Single")),
+            ButtonSegment(value: .double, label: Text("Double")),
+            ButtonSegment(value: .triple, label: Text("Triple")),
           ],
           selected: {selectedThrowType},
           onSelectionChanged: (newSelection) => setState(() {

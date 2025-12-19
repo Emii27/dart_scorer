@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CricketState {
 
- GameConfig get config; int get nbPlayers; List<PlayerThrow> get throws;
+ GameConfig get config; int get nbPlayers; List<PlayerThrow> get currentThrow;
 /// Create a copy of CricketState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $CricketStateCopyWith<CricketState> get copyWith => _$CricketStateCopyWithImpl<C
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CricketState&&(identical(other.config, config) || other.config == config)&&(identical(other.nbPlayers, nbPlayers) || other.nbPlayers == nbPlayers)&&const DeepCollectionEquality().equals(other.throws, throws));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CricketState&&(identical(other.config, config) || other.config == config)&&(identical(other.nbPlayers, nbPlayers) || other.nbPlayers == nbPlayers)&&const DeepCollectionEquality().equals(other.currentThrow, currentThrow));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,config,nbPlayers,const DeepCollectionEquality().hash(throws));
+int get hashCode => Object.hash(runtimeType,config,nbPlayers,const DeepCollectionEquality().hash(currentThrow));
 
 @override
 String toString() {
-  return 'CricketState(config: $config, nbPlayers: $nbPlayers, throws: $throws)';
+  return 'CricketState(config: $config, nbPlayers: $nbPlayers, currentThrow: $currentThrow)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $CricketStateCopyWith<$Res>  {
   factory $CricketStateCopyWith(CricketState value, $Res Function(CricketState) _then) = _$CricketStateCopyWithImpl;
 @useResult
 $Res call({
- GameConfig config, int nbPlayers, List<PlayerThrow> throws
+ GameConfig config, int nbPlayers, List<PlayerThrow> currentThrow
 });
 
 
@@ -62,11 +62,11 @@ class _$CricketStateCopyWithImpl<$Res>
 
 /// Create a copy of CricketState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? config = null,Object? nbPlayers = null,Object? throws = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? config = null,Object? nbPlayers = null,Object? currentThrow = null,}) {
   return _then(_self.copyWith(
 config: null == config ? _self.config : config // ignore: cast_nullable_to_non_nullable
 as GameConfig,nbPlayers: null == nbPlayers ? _self.nbPlayers : nbPlayers // ignore: cast_nullable_to_non_nullable
-as int,throws: null == throws ? _self.throws : throws // ignore: cast_nullable_to_non_nullable
+as int,currentThrow: null == currentThrow ? _self.currentThrow : currentThrow // ignore: cast_nullable_to_non_nullable
 as List<PlayerThrow>,
   ));
 }
@@ -152,10 +152,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( GameConfig config,  int nbPlayers,  List<PlayerThrow> throws)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( GameConfig config,  int nbPlayers,  List<PlayerThrow> currentThrow)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CricketState() when $default != null:
-return $default(_that.config,_that.nbPlayers,_that.throws);case _:
+return $default(_that.config,_that.nbPlayers,_that.currentThrow);case _:
   return orElse();
 
 }
@@ -173,10 +173,10 @@ return $default(_that.config,_that.nbPlayers,_that.throws);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( GameConfig config,  int nbPlayers,  List<PlayerThrow> throws)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( GameConfig config,  int nbPlayers,  List<PlayerThrow> currentThrow)  $default,) {final _that = this;
 switch (_that) {
 case _CricketState():
-return $default(_that.config,_that.nbPlayers,_that.throws);case _:
+return $default(_that.config,_that.nbPlayers,_that.currentThrow);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -193,10 +193,10 @@ return $default(_that.config,_that.nbPlayers,_that.throws);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( GameConfig config,  int nbPlayers,  List<PlayerThrow> throws)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( GameConfig config,  int nbPlayers,  List<PlayerThrow> currentThrow)?  $default,) {final _that = this;
 switch (_that) {
 case _CricketState() when $default != null:
-return $default(_that.config,_that.nbPlayers,_that.throws);case _:
+return $default(_that.config,_that.nbPlayers,_that.currentThrow);case _:
   return null;
 
 }
@@ -208,16 +208,16 @@ return $default(_that.config,_that.nbPlayers,_that.throws);case _:
 
 
 class _CricketState implements CricketState {
-  const _CricketState({required this.config, required this.nbPlayers, required final  List<PlayerThrow> throws}): _throws = throws;
+  const _CricketState({required this.config, required this.nbPlayers, required final  List<PlayerThrow> currentThrow}): _currentThrow = currentThrow;
   
 
 @override final  GameConfig config;
 @override final  int nbPlayers;
- final  List<PlayerThrow> _throws;
-@override List<PlayerThrow> get throws {
-  if (_throws is EqualUnmodifiableListView) return _throws;
+ final  List<PlayerThrow> _currentThrow;
+@override List<PlayerThrow> get currentThrow {
+  if (_currentThrow is EqualUnmodifiableListView) return _currentThrow;
   // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_throws);
+  return EqualUnmodifiableListView(_currentThrow);
 }
 
 
@@ -231,16 +231,16 @@ _$CricketStateCopyWith<_CricketState> get copyWith => __$CricketStateCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CricketState&&(identical(other.config, config) || other.config == config)&&(identical(other.nbPlayers, nbPlayers) || other.nbPlayers == nbPlayers)&&const DeepCollectionEquality().equals(other._throws, _throws));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CricketState&&(identical(other.config, config) || other.config == config)&&(identical(other.nbPlayers, nbPlayers) || other.nbPlayers == nbPlayers)&&const DeepCollectionEquality().equals(other._currentThrow, _currentThrow));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,config,nbPlayers,const DeepCollectionEquality().hash(_throws));
+int get hashCode => Object.hash(runtimeType,config,nbPlayers,const DeepCollectionEquality().hash(_currentThrow));
 
 @override
 String toString() {
-  return 'CricketState(config: $config, nbPlayers: $nbPlayers, throws: $throws)';
+  return 'CricketState(config: $config, nbPlayers: $nbPlayers, currentThrow: $currentThrow)';
 }
 
 
@@ -251,7 +251,7 @@ abstract mixin class _$CricketStateCopyWith<$Res> implements $CricketStateCopyWi
   factory _$CricketStateCopyWith(_CricketState value, $Res Function(_CricketState) _then) = __$CricketStateCopyWithImpl;
 @override @useResult
 $Res call({
- GameConfig config, int nbPlayers, List<PlayerThrow> throws
+ GameConfig config, int nbPlayers, List<PlayerThrow> currentThrow
 });
 
 
@@ -268,11 +268,11 @@ class __$CricketStateCopyWithImpl<$Res>
 
 /// Create a copy of CricketState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? config = null,Object? nbPlayers = null,Object? throws = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? config = null,Object? nbPlayers = null,Object? currentThrow = null,}) {
   return _then(_CricketState(
 config: null == config ? _self.config : config // ignore: cast_nullable_to_non_nullable
 as GameConfig,nbPlayers: null == nbPlayers ? _self.nbPlayers : nbPlayers // ignore: cast_nullable_to_non_nullable
-as int,throws: null == throws ? _self._throws : throws // ignore: cast_nullable_to_non_nullable
+as int,currentThrow: null == currentThrow ? _self._currentThrow : currentThrow // ignore: cast_nullable_to_non_nullable
 as List<PlayerThrow>,
   ));
 }

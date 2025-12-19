@@ -9,6 +9,6 @@ abstract class CricketState with _$CricketState {
   const factory CricketState({
     required GameConfig config,
     required int nbPlayers,
-    required List<PlayerThrow> throws,
+    required List<PlayerThrow> currentThrow,
   }) = _CricketState;
 }
