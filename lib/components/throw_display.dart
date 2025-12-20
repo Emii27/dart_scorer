@@ -9,7 +9,8 @@ class ThrowDisplay extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final playerName = "Player";
-    final throws = ref.watch(cricketControllerProvider).currentThrow;
+    final round = ref.watch(cricketControllerProvider).rounds.lastOrNull;
+    print('Current round ${round?.throws}');
 
     return Card(
       child: Padding(
@@ -34,7 +35,8 @@ class ThrowDisplay extends ConsumerWidget {
               child: Row(
                 spacing: SpaceUtils.space100,
                 children: List.generate(3, (index) {
-                  final playerThrow = throws.elementAtOrNull(index);
+                  final playerThrow = round?.throws.elementAtOrNull(index);
+                  print('playerThrow: $playerThrow');
 
                   return Expanded(
                     child: Container(

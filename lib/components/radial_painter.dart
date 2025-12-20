@@ -118,11 +118,17 @@ class RadialPainter extends CustomPainter {
 
   void _drawBull(Canvas canvas, Size size, bool isTapped) {
     final sector = TargetSector.bull();
+    final paintBackGround = Paint()
+      ..style = PaintingStyle.fill
+      ..color = ColorUtils.white;
     final paint = Paint()
       ..style = PaintingStyle.fill
-      ..color = ColorUtils.darkGrey.withAlpha(
-        (isTapped ? 255 * 0.5 : 255).toInt(),
-      );
+      ..color = ColorUtils.darkGrey.withAlpha((isTapped ? 255 * 0.75 : 255).toInt());
+
+    // Draw background
+    canvas.drawCircle(config.center, config.radius * 0.33, paintBackGround);
+
+    // Draw actual bull
     canvas.drawCircle(config.center, config.radius * 0.33, paint);
 
     final textPainter = TextPainter(

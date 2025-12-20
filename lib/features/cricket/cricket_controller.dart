@@ -10,16 +10,26 @@ part 'cricket_controller.g.dart';
 class CricketController extends _$CricketController {
   @override
   CricketState build() =>
-      CricketState(config: GameConfig.cricket, nbPlayers: 1, currentThrow: []);
+      CricketState(config: GameConfig.cricket, nbPlayers: 1, rounds: []);
 
   void addThrow(PlayerThrow newThrow) {
-    final maxSize = 3;
+    var rounds = [...state.rounds];
+    // var lastRound = rounds.isNotEmpty ? rounds.removeLast() : null;
+    var lastRound = rounds.lastOrNull;
 
-    var throws = [...state.currentThrow];
-    if (state.currentThrow.length >= maxSize) {
-      throws = [];
+    if (lastRound == null || lastRound.isComplete) {
+      lastRound = PlayerRound();
     }
-    throws.add(newThrow);
-    state = state.copyWith(currentThrow: throws);
+    if (!lastRound.isComplete && lastRound.throws.isNotEmpty){
+      rounds.removeLast();
+    }
+
+    lastRound.addThrow(newThrow);
+
+    rounds.add(lastRound);
+    state = state.copyWith(rounds: rounds);
+
+    print('Last round: ${lastRound.throws}');
+    print('Rounds length: ${state.rounds.length}');
   }
 }

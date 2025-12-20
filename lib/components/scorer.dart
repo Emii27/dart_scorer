@@ -24,6 +24,7 @@ class Scorer extends StatefulWidget {
 
 class _ScorerState extends State<Scorer> {
   ThrowType selectedThrowType = .single;
+  int selectedSector = -1;
 
   @override
   Widget build(BuildContext context) {
@@ -47,12 +48,12 @@ class _ScorerState extends State<Scorer> {
           ),
           child: GestureDetector(
             onTapDown: (details) => _onTap(details, painterConfig),
-            // onTapUp: (_) => _resetSelectedSector(),
-            // onTapCancel: () => _resetSelectedSector(),
+            onTapUp: (_) => _resetSelectedSector(),
+            onTapCancel: () => _resetSelectedSector(),
             child: CustomPaint(
               painter: RadialPainter(
                 config: painterConfig,
-                selectedSector: -1,
+                selectedSector: selectedSector,
                 progress: 0.0,
               ),
             ),
@@ -70,8 +71,6 @@ class _ScorerState extends State<Scorer> {
             selectedThrowType = newSelection.first;
           }),
         ),
-        // Text(ref.watch(cricketControllerProvider).throws.length.toString()),
-        // Text(ref.watch(cricketControllerProvider).throws.join(" ; ")),
       ],
     );
   }
@@ -100,6 +99,7 @@ class _ScorerState extends State<Scorer> {
     );
 
     setState(() {
+      selectedSector = sectorTap;
       selectedThrowType = .single;
     });
     // ref.read(cricketControllerProvider.notifier).addThrow(sectorTap);
@@ -113,5 +113,12 @@ class _ScorerState extends State<Scorer> {
         _ => 0.0,
       };
     }*/
+  }
+
+  /// Set the value of `selectedSector` to `-1`.
+  void _resetSelectedSector() {
+    setState(() {
+      selectedSector = -1;
+    });
   }
 }
