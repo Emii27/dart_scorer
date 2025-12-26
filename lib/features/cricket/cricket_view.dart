@@ -41,8 +41,6 @@ class _CricketViewState extends ConsumerState<CricketView> {
 
   @override
   Widget build(BuildContext context) {
-    final throws = ref.watch(cricketControllerProvider).currentThrow;
-
     return Scaffold(
       body: SafeArea(
         child: Stack(
@@ -50,7 +48,7 @@ class _CricketViewState extends ConsumerState<CricketView> {
             Padding(
               key: _contentKey,
               padding: const .all(SpaceUtils.space200),
-              child: _buildBody(ref, throws),
+              child: _buildBody(ref),
             ),
             Positioned(right: 0, child: CloseButton()),
             DraggableSheet.min(initialSize: _sheetInitialSize),
@@ -60,7 +58,7 @@ class _CricketViewState extends ConsumerState<CricketView> {
     );
   }
 
-  Widget _buildBody(WidgetRef ref, List<PlayerThrow> throws) {
+  Widget _buildBody(WidgetRef ref) {
     return Column(
       mainAxisSize: .min,
       spacing: SpaceUtils.space100,

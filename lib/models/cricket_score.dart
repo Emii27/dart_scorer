@@ -1,3 +1,3 @@
 class CricketScore {
-  final int score;
+  // final int score;
 }
